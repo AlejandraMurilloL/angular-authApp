@@ -38,8 +38,25 @@ export class AuthService {
       );
   }
 
-  register() {
-    
+  register(name: string, email: string, password: string) {
+    const url = `${this.baseUrl}/auth/new`;
+    const newUser = {
+      email,
+      password,
+      name
+    };
+
+    return this.http.post<AuthResponse>(url, newUser)
+      .pipe(
+        tap( resp => {
+          if (resp.ok) {
+            this.saveTokenInLocalStorage(resp.token!);
+            this.setUserInfo(resp);
+          }
+        }),
+        map( resp => { return resp.ok }),
+        catchError(err => of(err.error.msg) )
+      );
   }
 
   validateToken(): Observable<boolean> {
