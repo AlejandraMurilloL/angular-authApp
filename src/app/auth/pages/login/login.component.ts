@@ -12,7 +12,7 @@ import { AuthService } from '../../services/auth.service';
 export class LoginComponent {
 
   form: FormGroup = this.fb.group({
-    'email': ['test1@test.com', [Validators.required, Validators.email]],
+    'email': ['ale@gmail.com', [Validators.required, Validators.email]],
     'password': ['123456', [Validators.required, Validators.minLength(6)]]
   });
 
@@ -23,9 +23,13 @@ export class LoginComponent {
   login() {
     console.log(this.form.value);
     const { email, password } = this.form.value;
-    // this.router.navigateByUrl('/dashboard');
-    this.authService.login(email, password).subscribe((resp) => {
-      console.log(resp);
+    
+    this.authService.login(email, password).subscribe((ok) => {
+      if (ok) {
+        this.router.navigateByUrl('/dashboard');
+      }
+
+      // TODO: Mostrar mensaje de error
     });
   }
 
