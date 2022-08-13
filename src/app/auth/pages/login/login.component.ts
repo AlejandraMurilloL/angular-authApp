@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -24,12 +25,12 @@ export class LoginComponent {
     console.log(this.form.value);
     const { email, password } = this.form.value;
     
-    this.authService.login(email, password).subscribe((ok) => {
-      if (ok) {
+    this.authService.login(email, password).subscribe((resp) => {
+      if (resp === true) {
         this.router.navigateByUrl('/dashboard');
+      } else {
+        Swal.fire('Error', resp, 'error')
       }
-
-      // TODO: Mostrar mensaje de error
     });
   }
 
