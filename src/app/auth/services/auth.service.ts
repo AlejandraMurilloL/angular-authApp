@@ -27,10 +27,9 @@ export class AuthService {
 
     return this.http.post<AuthResponse>(url, credentials)
       .pipe(
-        tap( resp => {
-          if (resp.ok) {
-            this.saveTokenInLocalStorage(resp.token!);
-            this.setUserInfo(resp);
+        tap( ({ok, token}) => {
+          if (ok) {
+            this.saveTokenInLocalStorage(token!);
           }
         }),
         map( resp => { return resp.ok }),
@@ -48,10 +47,9 @@ export class AuthService {
 
     return this.http.post<AuthResponse>(url, newUser)
       .pipe(
-        tap( resp => {
-          if (resp.ok) {
-            this.saveTokenInLocalStorage(resp.token!);
-            this.setUserInfo(resp);
+        tap( ({ok, token}) => {
+          if (ok) {
+            this.saveTokenInLocalStorage(token!);
           }
         }),
         map( resp => { return resp.ok }),
@@ -85,7 +83,8 @@ export class AuthService {
   private setUserInfo(resp: AuthResponse) {
     this._user = {
       name: resp.name!,
-      uid: resp.uid! 
+      uid: resp.uid!,
+      email: resp.email! 
     };
   }
 
