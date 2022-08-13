@@ -22,9 +22,7 @@ export class LoginComponent {
               private authService: AuthService) { }
 
   login() {
-    console.log(this.form.value);
-    const { email, password } = this.form.value;
-    
+    const { email, password } = this.form.value;    
     this.authService.login(email, password).subscribe((resp) => {
       if (resp === true) {
         this.router.navigateByUrl('/dashboard');
